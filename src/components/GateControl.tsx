@@ -33,7 +33,7 @@ export default function GateControl() {
             },
             `servo:${servoAction}`
         );
-        
+
         toast.success(`Perintah dikirim: Gerbang ${servoAction === "open" ? "dibuka" : "ditutup"}`);
 
         if (servoAction === "open") {
@@ -82,14 +82,14 @@ export default function GateControl() {
     return (
         <div className="glass rounded-xl p-4 flex flex-col gap-3 h-full transition-transform duration-200 ease-out hover:scale-[1.02] hover:z-10">
             <div className="flex gap-2 shrink-0">
-                <Button 
+                <Button
                     onClick={() => handleControl("open")}
                     disabled={!isConnected}
                     className="flex-1 gap-1.5 h-9 text-xs bg-green-500/15 hover:bg-green-500/25 text-green-500 border border-green-500/25 rounded-lg transition-transform hover:scale-[1.03]" variant="outline"
                 >
                     <DoorOpen className="w-3.5 h-3.5" /> BUKA
                 </Button>
-                <Button 
+                <Button
                     onClick={() => handleControl("close")}
                     disabled={!isConnected}
                     className="flex-1 gap-1.5 h-9 text-xs bg-red-500/15 hover:bg-red-500/25 text-red-500 border border-red-500/25 rounded-lg transition-transform hover:scale-[1.03]" variant="outline"
@@ -115,27 +115,31 @@ export default function GateControl() {
                 <Button onClick={handleSaveThreshold} disabled={!isConnected} size="sm" className="h-7 px-3 text-xs">Simpan</Button>
             </div>
 
-            <div className="flex flex-col gap-1.5 flex-1 min-h-0 hover:scale-[1.04] hover:z-10">
+            <div className="flex flex-col gap-1.5 w-full h-80 max-h-80 overflow-hidden hover:scale-[1.02] transition-transform duration-200 hover:z-10">
+
                 <div className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider shrink-0">
                     <Terminal className="w-3 h-3" />
                     Log PUB/SUB MQTT
                 </div>
-                <div className="glass rounded-lg p-2.5 flex-1 overflow-y-auto font-mono text-[11px] text-muted-foreground space-y-1 min-h-0 flex flex-col">
-                    {logs.length === 0 ? (
-                        <p className="text-center opacity-50 mt-4">Menunggu aktivitas...</p>
-                    ) : (
-                        logs.map((log, i) => {
-                            let colorClass = "text-emerald-400";
-                            if (log.includes("FAILED") || log.includes("Ditolak")) colorClass = "text-red-400";
-                            else if (log.includes("PUB")) colorClass = "text-blue-400";
-                            else if (log.includes("PID:")) colorClass = "text-yellow-400";
 
-                            return (
-                                <p key={i} className={colorClass}>
-                                    {log}
-                                </p>
-                            );
-                        })
+                <div className="glass rounded-lg p-2.5 flex-1 overflow-y-auto font-mono text-[10px] text-muted-foreground min-h-0 border border-white/5 shadow-inner">
+                    {logs.length === 0 ? (
+                        <p className="text-center opacity-50 mt-4 italic">Menunggu aktivitas...</p>
+                    ) : (
+                        <div className="flex flex-col gap-1">
+                            {logs.map((log, i) => {
+                                let colorClass = "text-emerald-400/90";
+                                if (log.includes("FAILED") || log.includes("Ditolak")) colorClass = "text-red-400";
+                                else if (log.includes("PUB")) colorClass = "text-blue-400";
+                                else if (log.includes("PID:")) colorClass = "text-yellow-400";
+
+                                return (
+                                    <p key={i} className={`${colorClass} break-all leading-tight border-l border-white/10 pl-2`}>
+                                        {log}
+                                    </p>
+                                );
+                            })}
+                        </div>
                     )}
                 </div>
             </div>
