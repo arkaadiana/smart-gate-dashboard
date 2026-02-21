@@ -29,11 +29,8 @@ export default function LoginPage() {
       setLoading(false);
       toast.error("Gagal Login", { description: result.error });
     } else if (result?.success) {
-      toast.success("Login Berhasil", { description: "Mengarahkan ke dashboard..." });
-
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 500);
+      router.push("/dashboard"); 
+      toast.success("Login Berhasil");
     }
   };
 
