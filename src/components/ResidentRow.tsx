@@ -45,21 +45,21 @@ export default function ResidentRow({ r }: { r: any }) {
             {isExpanded && (
                 <TableRow className="bg-white/2 border-border/10">
                     <TableCell colSpan={6} className="py-2 px-4">
-                        <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-1 duration-200">
-                            <div className="flex flex-col gap-1">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-1 duration-200">
+                            <div className="flex flex-col gap-1 min-w-0">
                                 <span className="flex items-center gap-1 text-[8px] uppercase text-muted-foreground tracking-tighter">
                                     <CreditCard className="w-2 h-2" /> Daftar TNKB Lengkap
                                 </span>
-                                <span className="text-[10px] font-mono text-emerald-400">
+                                <span className="text-[10px] font-mono text-emerald-400 wrap-break-word">
                                     {r.plateNumber?.join(" • ") || "-"}
                                 </span>
                             </div>
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-1 min-w-0">
                                 <span className="flex items-center gap-1 text-[8px] uppercase text-muted-foreground tracking-tighter">
                                     <UserCircle className="w-2 h-2" /> Informasi Tambahan
                                 </span>
-                                <div className="flex gap-3 text-[9px]">
-                                    <span className="flex items-center gap-1 text-muted-foreground">
+                                <div className="flex flex-wrap gap-x-3 gap-y-1 text-[9px]">
+                                    <span className="flex items-center gap-1 text-muted-foreground break-all">
                                         ID: <span className="font-mono text-foreground">{r.id}</span>
                                     </span>
                                     <span className="flex items-center gap-1 text-muted-foreground">
