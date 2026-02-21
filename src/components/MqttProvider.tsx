@@ -50,7 +50,11 @@ export default function MqttProvider({ children }: { children: React.ReactNode }
         const host = process.env.NEXT_PUBLIC_MQTT_HOST;
         const port = process.env.NEXT_PUBLIC_MQTT_PORT;
         const path = process.env.NEXT_PUBLIC_MQTT_PATH || "";
-        const brokerUrl = `ws://${host}:${port}/${path}`;
+            
+        const isSSL = process.env.NEXT_PUBLIC_MQTT_SSL === 'true';
+        const protocol = isSSL ? 'wss' : 'ws';
+            
+        const brokerUrl = `${protocol}://${host}:${port}${path.startsWith('/') ? path : '/' + path}`;
 
         const client = mqtt.connect(brokerUrl, {
             username: process.env.NEXT_PUBLIC_MQTT_USERNAME,
