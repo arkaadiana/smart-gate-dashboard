@@ -83,11 +83,19 @@ export default function MqttProvider({ children }: { children: React.ReactNode }
 
                 try {
                     const parsed = JSON.parse(payload);
-                    setDeviceStatus((prev) => ({ ...prev, ...parsed }));
+                    
+                    // MAPPING DATA: Menyocokkan format ESP32 ke state Frontend
+                    setDeviceStatus((prev) => ({
+                        ...prev,
+                        gate_status: parsed.servo !== undefined ? parsed.servo : prev.gate_status,
+                        mode: parsed.auto_mode !== undefined ? parsed.auto_mode.toUpperCase() : prev.mode,
+                        distance: parsed.distance !== undefined ? parsed.distance : prev.distance,
+                        threshold: parsed.threshold !== undefined ? parsed.threshold : prev.threshold,
+                    }));
 
                     const logParts = [];
-                    if (parsed.gate_status) logParts.push(`gate:${parsed.gate_status}`);
-                    if (parsed.mode) logParts.push(`mode:${parsed.mode}`);
+                    if (parsed.servo) logParts.push(`gate:${parsed.servo}`);
+                    if (parsed.auto_mode) logParts.push(`mode:${parsed.auto_mode}`);
                     if (parsed.distance !== undefined) logParts.push(`dist:${parsed.distance}`);
                     if (parsed.threshold !== undefined) logParts.push(`thr:${parsed.threshold}`);
                     

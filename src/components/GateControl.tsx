@@ -16,8 +16,8 @@ export default function GateControl() {
     const [threshold, setThreshold] = useState("");
 
     useEffect(() => {
-        setIsAuto(deviceStatus.mode === "AUTO");
-        if (deviceStatus.threshold) {
+        setIsAuto(deviceStatus.mode === "AUTO" || deviceStatus.mode === "auto");
+        if (deviceStatus.threshold !== null && deviceStatus.threshold !== undefined) {
             setThreshold(deviceStatus.threshold.toString());
         }
     }, [deviceStatus.mode, deviceStatus.threshold]);
@@ -46,14 +46,13 @@ export default function GateControl() {
                 console.error("Gagal mencatat log manual:", error);
             }
         }
-
     };
 
     const handleSaveThreshold = () => {
         publish(
             process.env.NEXT_PUBLIC_MQTT_TOPIC_CONTROL!,
             {
-                servo: deviceStatus.gate_status?.toLowerCase() || "close",
+                servo: deviceStatus.gate_status?.toLowerCase() || "closed",
                 auto_mode: isAuto ? "auto" : "manual",
                 threshold: Number(threshold),
                 ping: true
@@ -69,7 +68,7 @@ export default function GateControl() {
         publish(
             process.env.NEXT_PUBLIC_MQTT_TOPIC_CONTROL!,
             {
-                servo: deviceStatus.gate_status?.toLowerCase() || "close",
+                servo: deviceStatus.gate_status?.toLowerCase() || "closed",
                 auto_mode: newMode,
                 threshold: Number(threshold),
                 ping: false
@@ -116,7 +115,6 @@ export default function GateControl() {
             </div>
 
             <div className="flex flex-col gap-1.5 w-full h-80 max-h-80 overflow-hidden hover:scale-[1.02] transition-transform duration-200 hover:z-10">
-
                 <div className="flex items-center gap-1.5 text-[11px] font-semibold text-muted-foreground uppercase tracking-wider shrink-0">
                     <Terminal className="w-3 h-3" />
                     Log PUB/SUB MQTT
